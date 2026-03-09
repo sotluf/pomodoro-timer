@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 type TimerMode = "focus" | "break";
 // Time to minutes
 const focusTime = 25;
@@ -11,9 +11,9 @@ export default function useTimer() {
   const [timeLeft, setTimeLeft] = useState(focusTime * 60); // minutes in seconds
   const [isActive, setIsActive] = useState<boolean>(false);
 
-  const getDuration = (timerMode: TimerMode) => {
+  const getDuration = useCallback((timerMode: TimerMode) => {
     return timerMode === "focus" ? focusTime * 60 : breakTime * 60;
-  };
+  }, []);
 
   const toggleTimer = () => {
     setIsActive((prev) => !prev);
@@ -24,11 +24,12 @@ export default function useTimer() {
     setTimeLeft(getDuration(mode));
   };
 
-  const switchMode = () => {
+  const switchMode = useCallback(() => {
     const newMode = mode === "focus" ? "break" : "focus";
     setMode(newMode);
     setTimeLeft(getDuration(newMode));
-  };
+    setIsActive(false);
+  }, [mode, getDuration]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -47,6 +48,13 @@ export default function useTimer() {
       if (interval) clearInterval(interval);
     };
   }, [isActive]);
+
+  // Automatically switch mode when time runs out
+  useEffect(() => {
+    if (timeLeft === 0) {
+      switchMode();
+    }
+  }, [timeLeft, switchMode]);
 
   return {
     mode,
