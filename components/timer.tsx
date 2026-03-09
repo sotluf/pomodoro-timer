@@ -3,7 +3,7 @@
 import useTimer from "@/hooks/useTimer";
 
 export default function Timer() {
-  const { mode, timeLeft } = useTimer();
+  const { mode, timeLeft, toggleTimer, isActive } = useTimer();
 
   // Format timeLeft from seconds to mm:ss
   const minutes = Math.floor(timeLeft / 60);
@@ -22,8 +22,8 @@ export default function Timer() {
       </div>
 
       <div className="flex justify-center gap-4 mb-4">
-        <button className="bg-yellow-500 hover:bg-yellow-600 px-5 py-2 text-white rounded-lg cursor-pointer">
-          Pause
+        <button onClick={toggleTimer} className="bg-yellow-500 hover:bg-yellow-600 px-5 py-2 text-white rounded-lg cursor-pointer">
+          {isActive ? "Pause" : "Start"}
         </button>
         <button className="bg-gray-200 hover:bg-gray-300 px-5 py-2 rounded-lg cursor-pointer">
           Reset
