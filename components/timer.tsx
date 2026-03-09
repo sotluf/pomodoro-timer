@@ -1,6 +1,15 @@
-import React from "react";
+"use client";
+
+import useTimer from "@/hooks/useTimer";
 
 export default function Timer() {
+  const { mode, timeLeft } = useTimer();
+
+  // Format timeLeft from seconds to mm:ss
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+
   return (
     <div className="max-w-sm bg-white shadow-xl w-full p-6 rounded-xl">
       <div className="flex items-center justify-between mb-4">
@@ -9,7 +18,7 @@ export default function Timer() {
       </div>
 
       <div className="text-6xl font-bold text-center mb-6 text-gray-800">
-        25:00
+        {formattedTime}
       </div>
 
       <div className="flex justify-center gap-4 mb-4">
