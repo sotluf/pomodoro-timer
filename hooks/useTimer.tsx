@@ -11,8 +11,17 @@ export default function useTimer() {
   const [timeLeft, setTimeLeft] = useState(focusTime * 60); // minutes in seconds
   const [isActive, setIsActive] = useState<boolean>(false);
 
+  const getDuration = (timerMode: TimerMode) => {
+    return timerMode === "focus" ? focusTime * 60 : breakTime * 60;
+  };
+
   const toggleTimer = () => {
     setIsActive((prev) => !prev);
+  };
+
+  const resetTimer = () => {
+    setIsActive(false);
+    setTimeLeft(getDuration(mode));
   };
 
   useEffect(() => {
@@ -38,5 +47,6 @@ export default function useTimer() {
     timeLeft,
     toggleTimer,
     isActive,
+    resetTimer,
   };
 }
