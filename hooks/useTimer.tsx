@@ -24,6 +24,12 @@ export default function useTimer() {
     setTimeLeft(getDuration(mode));
   };
 
+  const switchMode = () => {
+    const newMode = mode === "focus" ? "break" : "focus";
+    setMode(newMode);
+    setTimeLeft(getDuration(newMode));
+  };
+
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
@@ -48,5 +54,6 @@ export default function useTimer() {
     toggleTimer,
     isActive,
     resetTimer,
+    switchMode,
   };
 }
