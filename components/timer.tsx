@@ -3,8 +3,15 @@
 import useTimer from "@/hooks/useTimer";
 
 export default function Timer() {
-  const { mode, timeLeft, toggleTimer, isActive, resetTimer, switchMode } =
-    useTimer();
+  const {
+    mode,
+    timeLeft,
+    toggleTimer,
+    isActive,
+    resetTimer,
+    switchMode,
+    sessions,
+  } = useTimer();
 
   // Format timeLeft from seconds to mm:ss
   const minutes = Math.floor(timeLeft / 60);
@@ -17,7 +24,7 @@ export default function Timer() {
         <h2 className="text-xl font-medium">
           {mode === "focus" ? "Focus Time" : "Break Time"}
         </h2>
-        <div className="text-sm text-gray-500">Sessions: 1</div>
+        <div className="text-sm text-gray-500">Sessions: {sessions}</div>
       </div>
 
       <div
@@ -42,7 +49,7 @@ export default function Timer() {
       </div>
 
       <button
-        onClick={switchMode}
+        onClick={() => switchMode()}
         className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg cursor-pointer"
       >
         Switch to {mode === "focus" ? "Break" : "Focus"}
