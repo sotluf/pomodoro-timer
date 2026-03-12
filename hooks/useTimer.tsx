@@ -2,19 +2,33 @@
 
 import { useCallback, useEffect, useState } from "react";
 type TimerMode = "focus" | "break";
-// Time to minutes
-const focusTime = 25;
-const breakTime = 5;
 
 export default function useTimer() {
+  // Time to minutes
+  const [focusDuration, setFocusDuration] = useState(25);
+  const [breakDuration, setBreakDuration] = useState(5);
+
   const [mode, setMode] = useState<TimerMode>("focus");
-  const [timeLeft, setTimeLeft] = useState(focusTime * 60); // minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(focusDuration * 60); // Minutes in seconds
   const [isActive, setIsActive] = useState<boolean>(false);
   const [sessions, setSessions] = useState(0);
 
-  const getDuration = useCallback((timerMode: TimerMode) => {
-    return timerMode === "focus" ? focusTime * 60 : breakTime * 60;
-  }, []);
+  const getDuration = useCallback(
+    (timerMode: TimerMode) => {
+      return timerMode === "focus" ? focusDuration * 60 : breakDuration * 60;
+    },
+    [focusDuration, breakDuration],
+  );
+
+  // Function to set timer options
+  const setTimerOption = (focus: number, br: number) => {
+    setFocusDuration(focus);
+    setBreakDuration(br);
+
+    setMode("focus");
+    setIsActive(false);
+    setTimeLeft(focus * 60);
+  };
 
   const toggleTimer = () => {
     setIsActive((prev) => !prev);
@@ -72,5 +86,6 @@ export default function useTimer() {
     resetTimer,
     switchMode,
     sessions,
+    setTimerOption,
   };
 }

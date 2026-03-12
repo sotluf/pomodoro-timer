@@ -11,6 +11,7 @@ export default function Timer() {
     resetTimer,
     switchMode,
     sessions,
+    setTimerOption,
   } = useTimer();
 
   // Format timeLeft from seconds to mm:ss
@@ -19,7 +20,20 @@ export default function Timer() {
   const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
   return (
-    <div className="max-w-sm bg-white shadow-xl w-full p-6 rounded-xl">
+    <div className="max-w-md bg-white shadow-xl w-full p-6 rounded-xl">
+      <select
+        onChange={(e) => {
+          const value = (e.target as HTMLSelectElement).value;
+          if (value === "25/5") setTimerOption(25, 5);
+          if (value === "50/10") setTimerOption(50, 10);
+          if (value === "90/20") setTimerOption(90, 20);
+        }}
+        className="justify-center p-2 mb-4 rounded-lg cursor-pointer w-full text-center"
+      >
+        <option value="25/5">25 min focus / 5 min break</option>
+        <option value="50/10">50 min focus / 10 min break</option>
+        <option value="90/20">90 min focus / 20 min break</option>
+      </select>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-medium">
           {mode === "focus" ? "Focus Time" : "Break Time"}
